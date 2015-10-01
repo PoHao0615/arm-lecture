@@ -11,34 +11,25 @@
 fibonacci:
 	@ ADD/MODIFY CODE BELOW
 	@ PROLOG
+	@r0 is the passed value
 	push {r3, r4, r5, lr}
+	
+	mov r3, #-1 @ r3 = previous
+	mov r4, #1 @ r4 = result
+	mov r5, #0 @ r5 = sum
 
-	@ R4 = R0 - 0 (update flags)
-	@ if(R0 <= 0) goto .L3 (which returns 0)
+.loop:
+	add r5, r3, r4 @ sum = previous + result
+	mov r3, r4 @ previous = result
+	mov r4, r5 @ result = sum
 
-	@ Compare R4 wtih 1
-	@ If R4 == 1 goto .L4 (which returns 1)
+	subs r0, r0, #1 @ r0 = r0 - 1
+	it ge @ if ro >= 0
+	bge .loop 
 
-	@ R0 = R4 - 1
-	@ Recursive call to fibonacci with R4 - 1 as parameter
-
-
-	@ R5 = R0
-	@ R0 = R4 - 2
-	@ Recursive call to fibonacci with R4 - 2 as parameter
-
-	@ R0 = R5 + R0 (update flags)
-
-	pop {r3, r4, r5, pc}		@EPILOG
-
-	@ END CODE MODIFICATION
-.L3:
-	mov r0, #0			@ R0 = 0
-	pop {r3, r4, r5, pc}		@ EPILOG
-
-.L4:
-	mov r0, #1			@ R0 = 1
-	pop {r3, r4, r5, pc}		@ EPILOG
-
+	mov r0, r4 @ r0 = result
+	pop {r3, r4, r5, pc}
+	
 	.size fibonacci, .-fibonacci
-	.end
+	.end		
+	
