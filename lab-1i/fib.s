@@ -24,7 +24,7 @@ fibonacci:
 	mov r4, r5 @ result = sum
 
 	subs r0, r0, #1 @ r0 = r0 - 1
-	it ge @ if ro >= 0
+	it ge @ if r0 >= 0
 	bge .loop 
 
 	mov r0, r4 @ r0 = result
